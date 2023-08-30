@@ -13,7 +13,7 @@
         }
         .wrap{
             width:100%;
-            height:100vh;
+            min-height:100vh;
             background-color: coral;
             color: #fff;
             display: flex;
@@ -137,6 +137,19 @@
     .submit:hover{
         transform: translateY(-2px);
     }
+    li{
+        margin-bottom: 10px;
+    }
+    .WebsiteList{
+        width:500px;
+        min-height:1vh;
+        font-size:20px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+        list-style-type:none;
+    }
     </style>
 </head>
 <body>
@@ -159,13 +172,34 @@
             </div>
             <button type="submit" class="submit">Submit</button>
         </form>
-        <ul class="WebsiteList"></ul>
+        <ul class="WebsiteList" id="list"></ul>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
-    
     const passwordForm = document.getElementById('passwordForm');
+const websiteList = document.getElementById('list');
+
+
+async function fetchData() {
+    try {
+        const response = await axios.get('/get-usrs');
+        const users = response.data;
+        
+        websiteList.innerHTML = '';
+
+        
+        users.forEach(user => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `Назва вашого сайту: ${user.site} - ваш пароль: ${user.password}`;
+            websiteList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('An error occurred while fetching data:', error);
+    }
+}
+
+fetchData();
 
 passwordForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -175,9 +209,9 @@ passwordForm.addEventListener('submit', async (event) => {
 
     const siteValue = siteInput.value.trim(); 
     const passwordValue = passwordInput.value.trim(); 
-
+    
     if (siteValue === '' || passwordValue === '') { 
-        alert('Будь ласка, заповніть всі поля. Адміністрація Серверу :)');
+        alert('Будь ласка заповніть усі поля. Адміністрація Серверу😊 ' );
         return;
     }
 
@@ -190,6 +224,11 @@ passwordForm.addEventListener('submit', async (event) => {
         const response = await axios.post('/submt', formData); 
         if (response.status === 200) {
             console.log('Data saved successfully');
+
+            siteInput.value = '';
+            passwordInput.value = '';
+
+            fetchData();
         } else {
             console.log('Error saving data');
         }
@@ -197,8 +236,6 @@ passwordForm.addEventListener('submit', async (event) => {
         console.error('An error occurred:', error);
     }
 });
-
-
 
     </script>
 </body>

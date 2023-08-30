@@ -84,6 +84,15 @@ app.get('/get-users', async (req, res) => {
         res.status(500).json({ error: 'Error getting users' });
     }
 });
+app.get('/get-usrs', async (req, res) => {
+    try {
+        const users = await Usere.find({});
+        res.json(users);
+    } catch (error) {
+        console.error(`Error getting users: ${error}`);
+        res.status(500).json({ error: 'Error getting users' });
+    }
+});
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
