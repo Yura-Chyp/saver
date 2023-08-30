@@ -127,6 +127,7 @@
             console.log(response.data);
             alert('Form submitted successfully');
             authForm.reset();
+            window.location.href = '/home';
         })
         .catch((err)=>{
              authForm.reset();
