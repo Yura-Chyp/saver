@@ -28,30 +28,36 @@ const User = mongoose.model('User', {
 });
 
 
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+const db = mongoose.connection;
 
 app.post('/submit', async (req, res) => {
     try {
+        
+       
         const { login, password } = req.body;
+        
         const saltRounds = 10; 
         
 
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const user = await User.findOne({ login });
-
+        const user = await User.find({login:login});
+        console.log(user)
         const newUser = new User({ login, password: hashedPassword });
         await newUser.save();
-
+       db.collection('users').find({login:req.body.login})
         res.status(200).json({ message: 'Data saved' });
     } catch (error) {
         console.log(`Error processing the form`);
         res.status(500).json({ error: 'An error occurred while processing the form' });
     }
 });
+ 
+
 const userSchema = new mongoose.Schema({
     site: String,
     password: String
